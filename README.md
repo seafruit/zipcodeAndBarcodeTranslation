@@ -1,133 +1,54 @@
-# 外卖计费系统
+https://en.wikipedia.org/wiki/POSTNET https://www.cs.drexel.edu/~introcs/Fa12/assignments/HW4/index.html http://www.jiskha.com/ For faster sorting of letters, The United States Postal Service encourages companies that send large volumes of mail to use a barcode denoting the ZIP code. This type of barcode uses single lined bars of two different heights. In the following chart each number from 0 to 9 is denoted by it’s barcode equivalent. The vertical lines represent the long lines while the colons represent the short lines.
 
-## 注意！
+1   :::||
+2   ::|:|
+3   ::||:
+4   :|::|
+5   :|:|:
+6   :||::
+7   |:::|
+8   |::|:
+9   |:|::
+0   ||:::
+Example: | |:|:: :|:|: |:::| :::|| ::||: :|:|: | Bar Code Frame Digit-1 Digit-2 Digit-3 Digit-4 Digit-5 CD Frame 95713 Bar (9) (5) (7) (1) (3) (5) Bar
 
-请在`student-name.txt`中，写上你的名字，以便老师识别。
+There are full-height Frame Bars on each side of the whole barcode . Each number of the zip code is encoded with the barcode equivalent. After each digit of the zip code has been bar coded it is followed by a “Check Digit”, which is computed as follows: Add up all digits that comprise the zip code, and calculate the number (check digit) that will make this sum a multiple of 10. For example, the zip code 95713 has a sum of digits that equal 25; therefore, the number needed to make 25 into a multiple of 10 would be 5 – making the total of the digits equal to 30. This is called the check digit. Each digit of the zip code, and the check digit, is encoded according to the following table (note: this is only a numerical representation of the chart above where 1 denotes a full bar and 0 denotes a half bar):
 
-没有写名字的，直接视为不通过。
+    7   4   2   1   0
+1   0   0   0   1   1
+2   0   0   1   0   1
+3   0   0   1   1   0
+4   0   1   0   0   1
+5   0   1   0   1   0
+6   0   1   1   0   0
+7   1   0   0   0   1
+8   1   0   0   1   0
+9   1   0   1   0   0
+0   1   1   0   0   0
+  Note that they represent all combinations of two full and three half bars. The digit can be easily computed from the barcode using the column weights 7, 4, 2, 1, 0. For example, barcode digit 6 is written as: 01100 so if we want to convert from this barcode number back to what it is equal to we simply use the form: 07 + 14 + 12 + 01 + 0*0 = 6. The only exception is 0, which would yield eleven according to the weight formula so you will need to compute for that.
 
-另外提交作业时，通过pull request的方式提交到该repo。在pull request的标题上，也写上你的名字以方便老师查看。
+Create a java program that will perform the following functions (Optionally you can create this app in a GUI): Print a menu for the user to select one of the three options: Allow user to enter a zip code (5, 9, or 10 characters: the 9 digit zip is a 10 digit zip without the hyphen) and convert it to a barcode (you, of course, do not encode the hyphen) Allow user to enter the barcode and have it convert it back to a zip code. Insert a hyphen for the 9 digit zips Quit (check digit)You will need to print all output for the user. You will need to validate user entries for all data input.
 
-## 考试目标
+Validation Check:
 
-1. 考察使用tasking方式整理思路的能力
-2. 考察TDD能力
-3. 考察html/css/javascript的掌握程度
+45056-1234 == |:|::|:|:|:||::::|:|::||:::::||::|:|::||::|::|||:::|
 
-## 需求描述
+cd is 0
 
-某快餐品牌推出了它独家的外卖应用，用户可以在手机上直接下单。该应用会根据用户选择的菜品(Item)、数量(Count)和优惠方式(Promotion)进行计算，告诉用户需要支付的金额(Charge)。
+e.g.
 
-优惠活动有多种形式。假设用户一次只能使用一种优惠，那么使用哪种优惠省钱最多就会是一个让用户头疼的问题。所以该外卖应用为了方便用户，在用户下单时，会自动选择最优惠的方式并计算出最终金额让用户确认。
+finish a Cli application. start with
 
-我们需要实现一个名为`bestCharge`的函数，它能够接收用户选择的菜品和数量（以特定格式呈现）作为输入，然后返回计算后的汇总信息。
+1. Translate zip code to bar code
+2. Translate bar code to zip code
+3. Quit
+Please input your choices(1~3)
+When you input '1' and press enter
 
-已知：
+Please input zip code:
+When you input '2' and press enter
 
-- 该店的菜品每一个都有一个唯一的id
-- 当前的优惠方式有:
-  - 满30减6元
-  - 指定菜品半价
-- 除菜品外没有其它收费（如送餐费、餐盒费等）
-- 如果两种优惠方式省钱一样多，则使用前一种优惠方式
+Please input bar code:
+Any time when you input wrong, you would get these output:
 
-输入样例
--------
-
-```
-["ITEM0001 x 1", "ITEM0013 x 2", "ITEM0022 x 1"]
-```
-
-输出样例
--------
-
-```
-============= 订餐明细 =============
-黄焖鸡 x 1 = 18元
-肉夹馍 x 2 = 12元
-凉皮 x 1 = 8元
------------------------------------
-使用优惠:
-指定菜品半价(黄焖鸡，凉皮)，省13元
------------------------------------
-总计：25元
-===================================
-```
-
-或者：
-
-```
-============= 订餐明细 =============
-肉夹馍 x 4 = 24元
-凉皮 x 1 = 8元
------------------------------------
-使用优惠:
-满30减6元，省6元
------------------------------------
-总计：26元
-===================================
-```
-
-如果没有优惠可享受，则：
-
-```
-============= 订餐明细 =============
-肉夹馍 x 4 = 24元
------------------------------------
-总计：24元
-===================================
-```
-
-
-## 基础作业
-
-1. 相关代码在`src`目录下
-1. 实现`best-charge.js`中的`bestCharge`函数
-1. 写代码前先使用tasking整理思路并画出管道图
-1. 先写测试再写实现，代码须跟管道图匹配
-1. 代码整洁、函数粒度合适、命名有意义
-
-## 扩展作业
-
-基于html/css/javascript实现一个可让用户选菜并结算的页面：
-
-1. 相关代码在`public`目录下，已经提供若干基础代码和提示
-1. 在html上动态加载菜品，用户可以输入数量
-1. 在页面上动态加载并显示优惠信息
-1. 用户点击“结算”按钮时，会在页面上某处显示计算最优价格后的汇总信息（即前面的字符串形式的“输出样例”）
-1. 用户点击“清除”按钮时，会清除所有数量以及汇总信息
-1. 通过使用合适的html标签和css，让页面美观好用
-1. 对输入的数量进行检查，如果不是正整数，则提示“数量错误，请输入一个正整数”
-1. 可使用原生的javascript dom api，也可以使用`jquery`等库
-1. 页面上已有代码仅为参考，可完全自由发挥，只要能满足需求即可
-
-## 作业提示
-
-1. 可使用`loadAllItems()`方法获取全部的菜品
-2. 可使用`loadPromotions()`方法获取全部的优惠方式
-
-## 运行测试
-
-### 浏览器
-
-可使用浏览器打开`run-specs.html`文件运行测试
-
-### 命令行
-
-首先使用`node -v`命令确定你的`node`版本为`6.x`。
-
-如果你安装了`nvm`，可通过如下方式切换：
-
-```
-nvm use 6
-node -v
-```
-
-然后进入本项目根目录：
-
-```
-npm install
-npm test
-```
-
-就可以看到在命令行中运行测试并输出报告。
+Please give right input

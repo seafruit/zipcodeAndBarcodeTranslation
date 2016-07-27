@@ -33,7 +33,7 @@ describe('postnet', function () {
     let response = route("95713");
     expect(response).toEqual("the barcode is :||:|:::|:|:|:::|:::||::||::|:|:|");
   });
-  it('translate', function () {
+  it('translate wrong', function () {
     route("1");
     let response = route("9713");
     expect(response).toEqual("Please give right input"+'Please input zip code:');
@@ -44,7 +44,7 @@ describe('postnet', function () {
     let response = route("||:|:::|:|:|:::|:::||::||::|:|:|");
     expect(response).toEqual("the zipcode is :957135");
   });
-  it('translate', function () {
+  it('translate wrong', function () {
     route("2");
     let response = route("||:|:::|:|:|::::||::||::|:|:|");
     expect(response).toEqual("Please give right input"+"Please input bar code:");
